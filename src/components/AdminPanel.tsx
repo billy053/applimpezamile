@@ -407,7 +407,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : activeTab === 'history' ? (
                 <div>
                   {/* Filtros do Histórico */}
                   <div className="bg-gray-50 rounded-lg p-4 mb-6">
@@ -547,7 +547,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                     Mostrando {filteredHistory.length} de {bookings.length} agendamentos
                   </div>
                 </div>
-              ) : activeTab === 'slider' ? (
+              ) : (
                 <SliderManager
                   images={sliderImages.images}
                   onAddImage={sliderImages.addImage}
