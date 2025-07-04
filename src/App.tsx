@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Briefcase, Building, MessageCircle, Calendar } from 'lucide-react';
+import { Home, Briefcase, Building, MessageCircle, Calendar as CalendarIcon } from 'lucide-react';
 import Header from './components/Header';
 import ServiceCard from './components/ServiceCard';
 import Calendar from './components/Calendar';
@@ -205,7 +205,7 @@ Obrigado pela compreensão! 🙏`;
             onClick={handleQuickBooking}
             className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold text-lg rounded-full shadow-lg hover:from-pink-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-200"
           >
-            <Calendar className="w-6 h-6 mr-3" />
+            <CalendarIcon className="w-6 h-6 mr-3" />
             Agendar Agora
           </button>
           <p className="text-gray-600 text-sm mt-2">
