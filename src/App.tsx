@@ -46,6 +46,7 @@ function App() {
   const [currentBooking, setCurrentBooking] = useState<any>(null);
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [bookingFormData, setBookingFormData] = useState<BookingData | null>(null);
+  const [showHomepage, setShowHomepage] = useState(true);
   
   const { bookings, addBooking, getBookedDates, getPendingDates, confirmBookingViaWhatsApp, cancelBooking } = useBookings();
   const sliderImages = useSliderImages();
@@ -63,6 +64,7 @@ function App() {
     setSelectedService(serviceId);
     setCurrentStep('date');
     setShowServiceModal(false);
+    setShowHomepage(false);
   };
 
   const handleDateSelect = (date: Date) => {
@@ -132,6 +134,7 @@ ${bookingFormData.notes ? `📝 *Observações:* ${bookingFormData.notes}` : ''}
   const handleEditService = () => {
     setCurrentStep('service');
     setShowServiceModal(true);
+    setShowHomepage(true);
   };
 
   const handleEditDate = () => {
@@ -144,6 +147,7 @@ ${bookingFormData.notes ? `📝 *Observações:* ${bookingFormData.notes}` : ''}
     setCurrentBooking(null);
     setBookingFormData(null);
     setCurrentStep('service');
+    setShowHomepage(true);
   };
 
   const handleConfirmBookingViaWhatsApp = (bookingId: string) => {
@@ -221,29 +225,33 @@ Obrigado pela compreensão! 🙏`;
       <Header />
       
       {/* Quick Booking Button */}
-      <div className="container mx-auto px-4 pt-8">
-        <div className="text-center mb-6">
-          <button
-            onClick={handleQuickBooking}
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold text-lg rounded-full shadow-lg hover:from-pink-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-200"
-          >
-            <CalendarIcon className="w-6 h-6 mr-3" />
-            Agendar Agora
-          </button>
-          <p className="text-gray-600 text-sm mt-2">
-            Clique para escolher seu serviço e agendar rapidamente
-          </p>
+      {showHomepage && (
+        <div className="container mx-auto px-4 pt-8">
+          <div className="text-center mb-6">
+            <button
+              onClick={handleQuickBooking}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold text-lg rounded-full shadow-lg hover:from-pink-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-200"
+            >
+              <CalendarIcon className="w-6 h-6 mr-3" />
+              Agendar Agora
+            </button>
+            <p className="text-gray-600 text-sm mt-2">
+              Clique para escolher seu serviço e agendar rapidamente
+            </p>
+          </div>
         </div>
-      </div>
+      )}
       
       {/* Image Slider */}
-      <div className="container mx-auto px-4 pt-8">
-        <ImageSlider images={sliderImages.images} />
-      </div>
+      {showHomepage && (
+        <div className="container mx-auto px-4 pt-8">
+          <ImageSlider images={sliderImages.images} />
+        </div>
+      )}
       
       <div className="container mx-auto px-4 py-8">
         {/* Service Selection */}
-        {currentStep === 'service' && (
+        {currentStep === 'service' && showHomepage && (
           <div className="max-w-4xl mx-auto">
             {/* Review System */}
             <div className="mt-8">
@@ -253,8 +261,16 @@ Obrigado pela compreensão! 🙏`;
         )}
 
         {/* Date Selection */}
-        {currentStep === 'date' && selectedServiceData && (
+        {currentStep === 'date' && selectedServiceData && !showHomepage && (
           <div className="max-w-2xl mx-auto">
+            <div className="mb-6">
+              <button
+                onClick={() => setShowHomepage(true)}
+                className="flex items-center text-pink-600 hover:text-pink-800 text-sm font-medium"
+              >
+                ← Voltar ao início
+              </button>
+            </div>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 Escolha a Data
@@ -279,8 +295,16 @@ Obrigado pela compreensão! 🙏`;
         )}
 
         {/* Booking Form */}
-        {currentStep === 'booking' && selectedServiceData && selectedDate && (
+        {currentStep === 'booking' && selectedServiceData && selectedDate && !showHomepage && (
           <div className="max-w-2xl mx-auto">
+            <div className="mb-6">
+              <button
+                onClick={() => setShowHomepage(true)}
+                className="flex items-center text-pink-600 hover:text-pink-800 text-sm font-medium"
+              >
+                ← Voltar ao início
+              </button>
+            </div>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 Finalize seu Agendamento
@@ -310,8 +334,16 @@ Obrigado pela compreensão! 🙏`;
         )}
 
         {/* Booking Review */}
-        {currentStep === 'review' && selectedServiceData && selectedDate && bookingFormData && (
+        {currentStep === 'review' && selectedServiceData && selectedDate && bookingFormData && !showHomepage && (
           <div className="max-w-2xl mx-auto">
+            <div className="mb-6">
+              <button
+                onClick={() => setShowHomepage(true)}
+                className="flex items-center text-pink-600 hover:text-pink-800 text-sm font-medium"
+              >
+                ← Voltar ao início
+              </button>
+            </div>
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 Confirme seu Agendamento
@@ -407,7 +439,7 @@ Obrigado pela compreensão! 🙏`;
         )}
 
         {/* Booking Confirmation */}
-        {currentStep === 'confirmation' && currentBooking && (
+        {currentStep === 'confirmation' && currentBooking && !showHomepage && (
           <div className="max-w-2xl mx-auto">
             <BookingConfirmation
               booking={currentBooking}
