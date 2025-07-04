@@ -249,26 +249,8 @@ Obrigado pela compreensão! 🙏`;
         {/* Service Selection */}
         {currentStep === 'service' && (
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-              Escolha o Tipo de Serviço
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {services.map((service) => (
-                <ServiceCard
-                  key={service.id}
-                  icon={service.icon}
-                  title={service.title}
-                  description={service.description}
-                  price={service.price}
-                  duration={service.duration}
-                  isSelected={selectedService === service.id}
-                  onClick={() => handleServiceSelect(service.id)}
-                />
-              ))}
-            </div>
-            
             {/* Review System */}
-            <div className="mt-16">
+            <div className="mt-8">
               <ReviewSystem />
             </div>
           </div>
