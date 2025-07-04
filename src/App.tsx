@@ -146,7 +146,7 @@ ${bookingFormData.notes ? `📝 *Observações:* ${bookingFormData.notes}` : ''}
     setCurrentStep('service');
   };
 
-  const handleConfirmBooking = (bookingId: string) => {
+  const handleConfirmBookingViaWhatsApp = (bookingId: string) => {
     const booking = bookings.find(b => b.id === bookingId);
     if (!booking) return;
 
@@ -435,7 +435,7 @@ Obrigado pela compreensão! 🙏`;
               >
                 Confirmar Agendamento
               </button>
-            />
+            </div>
           </div>
         )}
 
@@ -466,7 +466,7 @@ Obrigado pela compreensão! 🙏`;
       <AdminPanel
         bookings={bookings}
         sliderImages={sliderImages}
-        onConfirmBooking={handleConfirmBooking}
+        onConfirmBooking={handleConfirmBookingViaWhatsApp}
         onCancelBooking={handleCancelBooking}
       />
 
