@@ -12,8 +12,8 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
     <div className="max-w-2xl mx-auto">
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-            <CheckCircle className="w-8 h-8 text-blue-600" />
+          <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
+            <CheckCircle className="w-8 h-8 text-pink-600" />
           </div>
         </div>
         
@@ -31,7 +31,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
           
           <div className="space-y-3">
             <div className="flex items-center">
-              <Calendar className="w-5 h-5 text-blue-600 mr-3" />
+              <Calendar className="w-5 h-5 text-pink-600 mr-3" />
               <div>
                 <span className="font-medium">Data:</span>
                 <span className="ml-2">{booking.date.toLocaleDateString('pt-BR')}</span>
@@ -39,7 +39,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
             </div>
             
             <div className="flex items-center">
-              <MessageCircle className="w-5 h-5 text-blue-600 mr-3" />
+              <MessageCircle className="w-5 h-5 text-pink-600 mr-3" />
               <div>
                 <span className="font-medium">Serviço:</span>
                 <span className="ml-2">{booking.serviceName}</span>
@@ -47,7 +47,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
             </div>
             
             <div className="flex items-center">
-              <User className="w-5 h-5 text-blue-600 mr-3" />
+              <User className="w-5 h-5 text-pink-600 mr-3" />
               <div>
                 <span className="font-medium">Nome:</span>
                 <span className="ml-2">{booking.clientName}</span>
@@ -55,7 +55,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
             </div>
             
             <div className="flex items-center">
-              <Phone className="w-5 h-5 text-blue-600 mr-3" />
+              <Phone className="w-5 h-5 text-pink-600 mr-3" />
               <div>
                 <span className="font-medium">Telefone:</span>
                 <span className="ml-2">{booking.clientPhone}</span>
@@ -63,7 +63,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
             </div>
             
             <div className="flex items-center">
-              <MapPin className="w-5 h-5 text-blue-600 mr-3" />
+              <MapPin className="w-5 h-5 text-pink-600 mr-3" />
               <div>
                 <span className="font-medium">Endereço:</span>
                 <span className="ml-2">{booking.clientAddress}</span>
@@ -72,7 +72,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
             
             {booking.notes && (
               <div className="flex items-start">
-                <MessageCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
+                <MessageCircle className="w-5 h-5 text-pink-600 mr-3 mt-0.5" />
                 <div>
                   <span className="font-medium">Observações:</span>
                   <span className="ml-2">{booking.notes}</span>
@@ -95,12 +95,12 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
           </p>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+        <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 mb-8">
           <div className="flex items-start">
-            <AlertTriangle className="w-5 h-5 text-blue-600 mr-2 mt-0.5" />
-            <div className="text-sm text-blue-800 text-left">
+            <AlertTriangle className="w-5 h-5 text-pink-600 mr-2 mt-0.5" />
+            <div className="text-sm text-pink-800 text-left">
               <p className="font-medium mb-1">Próximos passos:</p>
-              <ul className="text-xs space-y-1 text-blue-700">
+              <ul className="text-xs space-y-1 text-pink-700">
                 <li>• Nossa equipe analisará sua solicitação</li>
                 <li>• Você receberá uma mensagem de confirmação ou reagendamento</li>
                 <li>• Após a confirmação, a data será bloqueada no calendário</li>
@@ -112,7 +112,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ booking, onNe
 
         <button
           onClick={onNewBooking}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
+          className="bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
         >
           Fazer Nova Solicitação
         </button>

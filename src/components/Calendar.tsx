@@ -91,11 +91,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* Calendar Header with Stats */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+      <div className="bg-gradient-to-r from-pink-500 to-pink-600 text-white p-6">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigateMonth('prev')}
-            className="p-2 hover:bg-blue-500 rounded-full transition-colors"
+            className="p-2 hover:bg-pink-400 rounded-full transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -106,7 +106,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
           </div>
           <button
             onClick={() => navigateMonth('next')}
-            className="p-2 hover:bg-blue-500 rounded-full transition-colors"
+            className="p-2 hover:bg-pink-400 rounded-full transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -159,7 +159,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
                 disabled={!isAvailable}
                 className={`h-12 w-full rounded-lg text-sm font-medium transition-all duration-200 relative ${
                   isSelected
-                    ? 'bg-blue-500 text-white shadow-md transform scale-105'
+                    ? 'bg-pink-500 text-white shadow-md transform scale-105'
                     : isBooked
                     ? 'bg-red-100 text-red-600 cursor-not-allowed border border-red-200'
                     : isPending
@@ -225,12 +225,12 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
         </div>
 
         {/* Information Box */}
-        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="mt-4 bg-pink-50 border border-pink-200 rounded-lg p-4">
           <div className="flex items-start">
-            <Clock className="w-5 h-5 text-blue-600 mr-2 mt-0.5" />
-            <div className="text-sm text-blue-800">
+            <Clock className="w-5 h-5 text-pink-600 mr-2 mt-0.5" />
+            <div className="text-sm text-pink-800">
               <p className="font-medium mb-1">Como funciona o agendamento:</p>
-              <ul className="text-xs space-y-1 text-blue-700">
+              <ul className="text-xs space-y-1 text-pink-700">
                 <li>• Datas em <span className="font-medium text-yellow-700">amarelo</span> foram solicitadas via WhatsApp</li>
                 <li>• Datas em <span className="font-medium text-red-700">vermelho</span> foram confirmadas e estão ocupadas</li>
                 <li>• Você ainda pode selecionar datas pendentes se não forem confirmadas</li>

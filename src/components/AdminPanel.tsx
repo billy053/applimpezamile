@@ -201,9 +201,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
             <div>
               {/* Estatísticas Gerais */}
               <div className="grid grid-cols-4 gap-4 mb-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
-                  <div className="text-sm text-blue-800">Total</div>
+                <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-pink-600">{stats.total}</div>
+                  <div className="text-sm text-pink-800">Total</div>
                 </div>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
                   <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
@@ -225,7 +225,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                   onClick={() => setActiveTab('pending')}
                   className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                     activeTab === 'pending'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-pink-500 text-pink-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700'
                   }`}
                 >
@@ -236,7 +236,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                   onClick={() => setActiveTab('history')}
                   className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                     activeTab === 'history'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-pink-500 text-pink-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700'
                   }`}
                 >
@@ -259,7 +259,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                         className={`flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200 ${
                           isRefreshing 
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                            : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                            : 'bg-pink-100 text-pink-700 hover:bg-pink-200'
                         }`}
                       >
                         <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />

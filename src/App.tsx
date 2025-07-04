@@ -6,6 +6,7 @@ import Calendar from './components/Calendar';
 import BookingForm, { BookingData } from './components/BookingForm';
 import BookingConfirmation from './components/BookingConfirmation';
 import AdminPanel from './components/AdminPanel';
+import ReviewSystem from './components/ReviewSystem';
 import { useBookings } from './hooks/useBookings';
 
 const services = [
@@ -188,20 +189,20 @@ Obrigado pela compreensão! 🙏`;
           <div className="flex justify-center mb-8">
             <div className="flex items-center space-x-4">
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'service' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
+                currentStep === 'service' ? 'bg-pink-500 text-white' : 'bg-green-500 text-white'
               }`}>
                 1
               </div>
               <div className="w-12 h-0.5 bg-gray-300"></div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'date' ? 'bg-blue-500 text-white' : 
+                currentStep === 'date' ? 'bg-pink-500 text-white' : 
                 currentStep === 'booking' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}>
                 2
               </div>
               <div className="w-12 h-0.5 bg-gray-300"></div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'booking' ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                currentStep === 'booking' ? 'bg-pink-500 text-white' : 'bg-gray-300'
               }`}>
                 3
               </div>
@@ -212,6 +213,9 @@ Obrigado pela compreensão! 🙏`;
         {/* Service Selection */}
         {currentStep === 'service' && (
           <div className="max-w-4xl mx-auto">
+            {/* Review System */}
+            <ReviewSystem />
+            
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
               Escolha o Tipo de Serviço
             </h2>
@@ -244,7 +248,7 @@ Obrigado pela compreensão! 🙏`;
               </p>
               <button
                 onClick={resetBooking}
-                className="text-blue-600 hover:text-blue-800 text-sm mt-2"
+                className="text-pink-600 hover:text-pink-800 text-sm mt-2"
               >
                 Alterar serviço
               </button>
@@ -268,14 +272,14 @@ Obrigado pela compreensão! 🙏`;
               <div className="flex justify-center space-x-4 text-sm text-gray-600">
                 <button
                   onClick={() => setCurrentStep('service')}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-pink-600 hover:text-pink-800"
                 >
                   Alterar serviço
                 </button>
                 <span>•</span>
                 <button
                   onClick={() => setCurrentStep('date')}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-pink-600 hover:text-pink-800"
                 >
                   Alterar data
                 </button>

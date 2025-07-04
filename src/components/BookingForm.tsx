@@ -65,6 +65,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
             onChange={handleChange}
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
             placeholder="Seu nome completo"
           />
         </div>
@@ -80,6 +81,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
             placeholder="seu@email.com"
           />
         </div>
@@ -96,6 +98,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
             onChange={handleChange}
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
             placeholder="(11) 99999-9999"
           />
         </div>
@@ -112,6 +115,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
             onChange={handleChange}
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
             placeholder="Rua, número, bairro, cidade"
           />
         </div>
@@ -127,17 +131,19 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
             onChange={handleChange}
             rows={3}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all resize-none"
             placeholder="Informações adicionais sobre o serviço..."
           />
         </div>
 
         {selectedDate && selectedService && (
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-blue-800 mb-2">Resumo do Agendamento</h3>
+          <div className="bg-pink-50 p-4 rounded-lg">
+            <h3 className="font-semibold text-pink-800 mb-2">Resumo do Agendamento</h3>
             <p className="text-blue-600 text-sm">
+            <p className="text-pink-600 text-sm">
               <strong>Serviço:</strong> {selectedService}
             </p>
-            <p className="text-blue-600 text-sm">
+            <p className="text-pink-600 text-sm">
               <strong>Data:</strong> {selectedDate.toLocaleDateString('pt-BR')}
             </p>
           </div>
@@ -148,7 +154,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
           disabled={!isFormValid}
           className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
             isFormValid
-              ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+              ? 'bg-pink-600 hover:bg-pink-700 shadow-lg hover:shadow-xl'
               : 'bg-gray-300 cursor-not-allowed'
           }`}
         >
