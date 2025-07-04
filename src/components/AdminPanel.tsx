@@ -599,30 +599,3 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
 };
 
 export default AdminPanel;
-                  bookings={bookings}
-                  onRemoveBooking={onCancelBooking}
-                />
-              ) : null}
-
-              {/* Statistics Footer */}
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <div className="flex justify-between items-center text-sm text-gray-600">
-                  <span>
-                    Última atualização: {new Date().toLocaleTimeString('pt-BR')}
-                  </span>
-                  <span>
-                    Total de solicitações hoje: {bookings.filter(b => 
-                      b.createdAt.toDateString() === new Date().toDateString()
-                    ).length}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default AdminPanel;
