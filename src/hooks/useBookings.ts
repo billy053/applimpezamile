@@ -49,7 +49,7 @@ export const useBookings = () => {
       id: Date.now().toString(),
       status: 'pending',
       createdAt: new Date(),
-      whatsappSent: true,
+      whatsappSent: false, // WhatsApp to client not sent yet
     };
     setBookings(prev => [...prev, newBooking]);
     return newBooking;
@@ -61,7 +61,8 @@ export const useBookings = () => {
         booking.id === id ? { 
           ...booking, 
           status,
-          confirmedAt: status === 'confirmed' ? new Date() : booking.confirmedAt
+          confirmedAt: status === 'confirmed' ? new Date() : booking.confirmedAt,
+          whatsappSent: status === 'confirmed' || status === 'cancelled' ? true : booking.whatsappSent
         } : booking
       )
     );
@@ -74,7 +75,8 @@ export const useBookings = () => {
         booking.id === id ? { 
           ...booking, 
           status: 'confirmed' as const,
-          confirmedAt: new Date()
+          confirmedAt: new Date(),
+          whatsappSent: true // Mark that WhatsApp confirmation was sent
         } : booking
       )
     );
@@ -82,7 +84,6 @@ export const useBookings = () => {
     // Notificação de sucesso
     const booking = bookings.find(b => b.id === id);
     if (booking) {
-      // Em um app real, você enviaria uma notificação push ou email
       console.log(`Agendamento confirmado para ${booking.clientName} em ${booking.date.toLocaleDateString('pt-BR')}`);
     }
   };
@@ -91,7 +92,11 @@ export const useBookings = () => {
   const cancelBooking = (id: string) => {
     setBookings(prev => 
       prev.map(booking => 
-        booking.id === id ? { ...booking, status: 'cancelled' as const } : booking
+        booking.id === id ? { 
+          ...booking, 
+          status: 'cancelled' as const,
+          whatsappSent: true // Mark that WhatsApp cancellation was sent
+        } : booking
       )
     );
   };
@@ -103,10 +108,10 @@ export const useBookings = () => {
       .map(booking => booking.date);
   };
 
-  // Retorna datas pendentes (enviadas via WhatsApp mas não confirmadas)
+  // Retorna datas pendentes (solicitadas mas não confirmadas)
   const getPendingDates = () => {
     return bookings
-      .filter(booking => booking.status === 'pending' && booking.whatsappSent)
+      .filter(booking => booking.status === 'pending')
       .map(booking => booking.date);
   };
 

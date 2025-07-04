@@ -57,7 +57,7 @@ function App() {
     const service = services.find(s => s.id === selectedService);
     if (!service) return;
 
-    // Create booking record
+    // Create booking record (status: pending, no WhatsApp sent yet)
     const newBooking = addBooking({
       date: booking.date,
       serviceId: selectedService,
@@ -71,8 +71,8 @@ function App() {
 
     setCurrentBooking(newBooking);
 
-    // Format the WhatsApp message with all booking details
-    const message = `🧹 *NOVA SOLICITAÇÃO DE AGENDAMENTO*
+    // Format the WhatsApp message for admin notification
+    const adminMessage = `🧹 *NOVA SOLICITAÇÃO DE AGENDAMENTO*
 
 📅 *Data:* ${booking.date.toLocaleDateString('pt-BR')}
 🏠 *Serviço:* ${service.title}
@@ -88,13 +88,13 @@ ${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
 
 🔢 *ID da Solicitação:* #${newBooking.id.slice(-6)}
 
-⚠️ *IMPORTANTE:* Responda com "ESTOU CONFIRMANDO" para aprovar este agendamento ou "VOU RECUSAR" para cancelar.`;
+⚠️ *IMPORTANTE:* Use o painel administrativo para confirmar ou recusar este agendamento.`;
 
     // Replace with your actual WhatsApp number (include country code without + or spaces)
     const whatsappNumber = '555381556144';
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(adminMessage)}`;
     
-    // Open WhatsApp in a new tab/window
+    // Open WhatsApp in a new tab/window to notify admin
     window.open(whatsappUrl, '_blank');
 
     // Show confirmation screen
@@ -109,11 +109,71 @@ ${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
   };
 
   const handleConfirmBooking = (bookingId: string) => {
+    const booking = bookings.find(b => b.id === bookingId);
+    if (!booking) return;
+
+    // Confirm the booking
     confirmBookingViaWhatsApp(bookingId);
+
+    // Send confirmation WhatsApp to client
+    const service = services.find(s => s.id === booking.serviceId);
+    const clientMessage = `✅ *AGENDAMENTO CONFIRMADO - CleanPro*
+
+Olá ${booking.clientName}! Seu agendamento foi confirmado com sucesso.
+
+📅 *Data:* ${booking.date.toLocaleDateString('pt-BR')}
+🏠 *Serviço:* ${booking.serviceName}
+💰 *Valor:* ${service?.price || 'A combinar'}
+⏰ *Duração estimada:* ${service?.duration || 'A definir'}
+📍 *Local:* ${booking.clientAddress}
+
+${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
+
+🔢 *Número do agendamento:* #${booking.id.slice(-6)}
+
+📞 *Dúvidas?* Entre em contato conosco pelo WhatsApp.
+
+Obrigado por escolher a CleanPro! 🧹✨`;
+
+    // Send WhatsApp message to client
+    const clientPhone = booking.clientPhone.replace(/\D/g, '');
+    const clientWhatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(clientMessage)}`;
+    
+    // Open WhatsApp to send confirmation to client
+    window.open(clientWhatsappUrl, '_blank');
   };
 
   const handleCancelBooking = (bookingId: string) => {
+    const booking = bookings.find(b => b.id === bookingId);
+    if (!booking) return;
+
+    // Cancel the booking
     cancelBooking(bookingId);
+
+    // Send cancellation WhatsApp to client
+    const clientMessage = `❌ *AGENDAMENTO CANCELADO - CleanPro*
+
+Olá ${booking.clientName},
+
+Infelizmente precisamos cancelar seu agendamento:
+
+📅 *Data:* ${booking.date.toLocaleDateString('pt-BR')}
+🏠 *Serviço:* ${booking.serviceName}
+🔢 *Número:* #${booking.id.slice(-6)}
+
+Pedimos desculpas pelo inconveniente. Entre em contato conosco para reagendar ou esclarecer dúvidas.
+
+📞 *WhatsApp:* Responda esta mensagem
+💬 *Atendimento:* Segunda a sexta, 8h às 18h
+
+Obrigado pela compreensão! 🙏`;
+
+    // Send WhatsApp message to client
+    const clientPhone = booking.clientPhone.replace(/\D/g, '');
+    const clientWhatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(clientMessage)}`;
+    
+    // Open WhatsApp to send cancellation to client
+    window.open(clientWhatsappUrl, '_blank');
   };
 
   const selectedServiceData = services.find(s => s.id === selectedService);

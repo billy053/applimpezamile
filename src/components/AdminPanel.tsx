@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle, XCircle, Clock, Phone, Calendar, User, MapPin } from 'lucide-react';
+import { Shield, CheckCircle, XCircle, Clock, Phone, Calendar, User, MapPin, MessageCircle } from 'lucide-react';
 import { Booking } from '../hooks/useBookings';
 
 interface AdminPanelProps {
@@ -88,7 +88,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                 </h3>
                 <div className="flex items-center text-sm text-gray-600">
                   <Clock className="w-4 h-4 mr-1" />
-                  Aguardando confirmação via WhatsApp
+                  Aguardando aprovação
                 </div>
               </div>
 
@@ -157,20 +157,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                         </div>
                       )}
 
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+                        <div className="flex items-center text-sm text-amber-800">
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          <span className="font-medium">Ação necessária:</span>
+                        </div>
+                        <p className="text-xs text-amber-700 mt-1">
+                          Ao confirmar, o cliente receberá automaticamente uma mensagem de confirmação via WhatsApp.
+                          Ao recusar, o cliente será notificado sobre o cancelamento.
+                        </p>
+                      </div>
+
                       <div className="flex space-x-3">
                         <button
                           onClick={() => onConfirmBooking(booking.id)}
                           className="flex items-center px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors"
                         >
                           <CheckCircle className="w-4 h-4 mr-2" />
-                          Confirmar Agendamento
+                          Confirmar e Notificar Cliente
                         </button>
                         <button
                           onClick={() => onCancelBooking(booking.id)}
                           className="flex items-center px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors"
                         >
                           <XCircle className="w-4 h-4 mr-2" />
-                          Recusar
+                          Recusar e Notificar Cliente
                         </button>
                         <a
                           href={`https://wa.me/${booking.clientPhone.replace(/\D/g, '')}`}

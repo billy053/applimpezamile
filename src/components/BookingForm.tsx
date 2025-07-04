@@ -148,11 +148,11 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
           disabled={!isFormValid}
           className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-200 ${
             isFormValid
-              ? 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl'
+              ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
               : 'bg-gray-300 cursor-not-allowed'
           }`}
         >
-          Confirmar Agendamento via WhatsApp
+          Enviar Solicitação de Agendamento
         </button>
       </form>
     </div>
