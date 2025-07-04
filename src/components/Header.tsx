@@ -9,7 +9,6 @@ const Header = () => {
           <Sparkles className="w-8 h-8 mr-3 text-pink-200" />
           <h1 className="text-3xl font-bold">CleanPro</h1>
         </div>
-        <p className="text-center text-blue-100 text-lg max-w-2xl mx-auto">
         <p className="text-center text-pink-100 text-lg max-w-2xl mx-auto">
           Serviços de limpeza profissional com agendamento flexível
         </p>
@@ -25,9 +24,3 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
-};
-
-export default Header;
-  )
-}

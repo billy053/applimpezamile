@@ -137,11 +137,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ selectedDate, selectedService
         </div>
 
         {selectedDate && selectedService && (
-          )
-          }
           <div className="bg-pink-50 p-4 rounded-lg">
             <h3 className="font-semibold text-pink-800 mb-2">Resumo do Agendamento</h3>
-            <p className="text-blue-600 text-sm">
             <p className="text-pink-600 text-sm">
               <strong>Serviço:</strong> {selectedService}
             </p>
