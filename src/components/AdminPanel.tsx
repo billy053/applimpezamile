@@ -569,7 +569,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                   onToggleActive={sliderImages.toggleImageActive}
                 />
               ) : activeTab === 'availability' ? (
-                <AvailabilityManager />
+                <AvailabilityManager 
+                  bookings={bookings}
+                  onRemoveBooking={onCancelBooking}
+                />
               ) : null}
 
               {/* Statistics Footer */}
