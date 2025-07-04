@@ -304,19 +304,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                           <div className="grid md:grid-cols-2 gap-4 mb-4">
                             <div className="space-y-2">
                               <div className="flex items-center text-sm">
-                                <Calendar className="w-4 h-4 text-blue-600 mr-2" />
+                                <Calendar className="w-4 h-4 text-pink-600 mr-2" />
                                 <span className="font-medium">Data:</span>
                                 <span className="ml-1">{booking.date.toLocaleDateString('pt-BR')}</span>
                               </div>
                               
                               <div className="flex items-center text-sm">
-                                <User className="w-4 h-4 text-blue-600 mr-2" />
+                                <User className="w-4 h-4 text-pink-600 mr-2" />
                                 <span className="font-medium">Cliente:</span>
                                 <span className="ml-1">{booking.clientName}</span>
                               </div>
                               
                               <div className="flex items-center text-sm">
-                                <Phone className="w-4 h-4 text-blue-600 mr-2" />
+                                <Phone className="w-4 h-4 text-pink-600 mr-2" />
                                 <span className="font-medium">Telefone:</span>
                                 <span className="ml-1">{booking.clientPhone}</span>
                               </div>
@@ -329,7 +329,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, onConfirmBooking, onC
                               </div>
                               
                               <div className="flex items-start text-sm">
-                                <MapPin className="w-4 h-4 text-blue-600 mr-2 mt-0.5" />
+                                <MapPin className="w-4 h-4 text-pink-600 mr-2 mt-0.5" />
                                 <div>
                                   <span className="font-medium">Endereço:</span>
                                   <span className="ml-1">{booking.clientAddress}</span>
