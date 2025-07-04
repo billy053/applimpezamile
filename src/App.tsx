@@ -42,9 +42,10 @@ const services = [
 function App() {
   const [selectedService, setSelectedService] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [currentStep, setCurrentStep] = useState<'service' | 'date' | 'booking' | 'confirmation'>('service');
+  const [currentStep, setCurrentStep] = useState<'service' | 'date' | 'booking' | 'review' | 'confirmation'>('service');
   const [currentBooking, setCurrentBooking] = useState<any>(null);
   const [showServiceModal, setShowServiceModal] = useState(false);
+  const [bookingFormData, setBookingFormData] = useState<BookingData | null>(null);
   
   const { bookings, addBooking, getBookedDates, getPendingDates, confirmBookingViaWhatsApp, cancelBooking } = useBookings();
   const sliderImages = useSliderImages();
@@ -69,20 +70,27 @@ function App() {
     setCurrentStep('booking');
   };
 
-  const handleBookingSubmit = (booking: BookingData) => {
+  const handleBookingFormSubmit = (booking: BookingData) => {
+    setBookingFormData(booking);
+    setCurrentStep('review');
+  };
+
+  const handleConfirmBooking = () => {
+    if (!bookingFormData) return;
+    
     const service = services.find(s => s.id === selectedService);
     if (!service) return;
 
     // Create booking record (status: pending, no WhatsApp sent yet)
     const newBooking = addBooking({
-      date: booking.date,
+      date: bookingFormData.date,
       serviceId: selectedService,
       serviceName: service.title,
-      clientName: booking.name,
-      clientPhone: booking.phone,
-      clientEmail: booking.email,
-      clientAddress: booking.address,
-      notes: booking.notes,
+      clientName: bookingFormData.name,
+      clientPhone: bookingFormData.phone,
+      clientEmail: bookingFormData.email,
+      clientAddress: bookingFormData.address,
+      notes: bookingFormData.notes,
     });
 
     setCurrentBooking(newBooking);
@@ -90,17 +98,17 @@ function App() {
     // Format the WhatsApp message for admin notification
     const adminMessage = `🧹 *NOVA SOLICITAÇÃO DE AGENDAMENTO*
 
-📅 *Data:* ${booking.date.toLocaleDateString('pt-BR')}
+📅 *Data:* ${bookingFormData.date.toLocaleDateString('pt-BR')}
 🏠 *Serviço:* ${service.title}
 💰 *Valor:* ${service.price}
 ⏰ *Duração:* ${service.duration}
 
-👤 *Cliente:* ${booking.name}
-📧 *E-mail:* ${booking.email}
-📱 *Telefone:* ${booking.phone}
-📍 *Endereço:* ${booking.address}
+👤 *Cliente:* ${bookingFormData.name}
+📧 *E-mail:* ${bookingFormData.email}
+📱 *Telefone:* ${bookingFormData.phone}
+📍 *Endereço:* ${bookingFormData.address}
 
-${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
+${bookingFormData.notes ? `📝 *Observações:* ${bookingFormData.notes}` : ''}
 
 🔢 *ID da Solicitação:* #${newBooking.id.slice(-6)}
 
@@ -117,10 +125,24 @@ ${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
     setCurrentStep('confirmation');
   };
 
+  const handleBackToForm = () => {
+    setCurrentStep('booking');
+  };
+
+  const handleEditService = () => {
+    setCurrentStep('service');
+    setShowServiceModal(true);
+  };
+
+  const handleEditDate = () => {
+    setCurrentStep('date');
+  };
+
   const resetBooking = () => {
     setSelectedService('');
     setSelectedDate(null);
     setCurrentBooking(null);
+    setBookingFormData(null);
     setCurrentStep('service');
   };
 
@@ -221,26 +243,33 @@ Obrigado pela compreensão! 🙏`;
       
       <div className="container mx-auto px-4 py-8">
         {/* Progress indicator - only show for booking flow */}
-        {currentStep !== 'confirmation' && (
+        {currentStep !== 'service' && currentStep !== 'confirmation' && (
           <div className="flex justify-center mb-8">
             <div className="flex items-center space-x-4">
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'service' ? 'bg-pink-500 text-white' : 'bg-green-500 text-white'
+                ['date', 'booking', 'review'].includes(currentStep) ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}>
                 1
               </div>
               <div className="w-12 h-0.5 bg-gray-300"></div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
                 currentStep === 'date' ? 'bg-pink-500 text-white' : 
-                currentStep === 'booking' ? 'bg-green-500 text-white' : 'bg-gray-300'
+                ['booking', 'review'].includes(currentStep) ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}>
                 2
               </div>
               <div className="w-12 h-0.5 bg-gray-300"></div>
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'booking' ? 'bg-pink-500 text-white' : 'bg-gray-300'
+                currentStep === 'booking' ? 'bg-pink-500 text-white' : 
+                currentStep === 'review' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}>
                 3
+              </div>
+              <div className="w-12 h-0.5 bg-gray-300"></div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                currentStep === 'review' ? 'bg-pink-500 text-white' : 'bg-gray-300'
+              }`}>
+                4
               </div>
             </div>
           </div>
@@ -267,7 +296,7 @@ Obrigado pela compreensão! 🙏`;
                 Serviço selecionado: <strong>{selectedServiceData.title}</strong>
               </p>
               <button
-                onClick={resetBooking}
+                onClick={handleEditService}
                 className="text-pink-600 hover:text-pink-800 text-sm mt-2"
               >
                 Alterar serviço
@@ -291,14 +320,14 @@ Obrigado pela compreensão! 🙏`;
               </h2>
               <div className="flex justify-center space-x-4 text-sm text-gray-600">
                 <button
-                  onClick={() => setCurrentStep('service')}
+                  onClick={handleEditService}
                   className="text-pink-600 hover:text-pink-800"
                 >
                   Alterar serviço
                 </button>
                 <span>•</span>
                 <button
-                  onClick={() => setCurrentStep('date')}
+                  onClick={handleEditDate}
                   className="text-pink-600 hover:text-pink-800"
                 >
                   Alterar data
@@ -308,7 +337,104 @@ Obrigado pela compreensão! 🙏`;
             <BookingForm
               selectedDate={selectedDate}
               selectedService={selectedServiceData.title}
-              onBookingSubmit={handleBookingSubmit}
+              onBookingSubmit={handleBookingFormSubmit}
+            />
+          </div>
+        )}
+
+        {/* Booking Review */}
+        {currentStep === 'review' && selectedServiceData && selectedDate && bookingFormData && (
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                Confirme seu Agendamento
+              </h2>
+              <p className="text-gray-600">
+                Revise os dados antes de finalizar sua solicitação
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6">Resumo do Agendamento</h3>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Serviço:</span>
+                  <div className="text-right">
+                    <div className="font-semibold text-gray-800">{selectedServiceData.title}</div>
+                    <div className="text-sm text-gray-600">{selectedServiceData.duration}</div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Data:</span>
+                  <span className="font-semibold text-gray-800">{selectedDate.toLocaleDateString('pt-BR')}</span>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Valor:</span>
+                  <span className="font-semibold text-pink-600 text-lg">{selectedServiceData.price}</span>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Cliente:</span>
+                  <span className="font-semibold text-gray-800">{bookingFormData.name}</span>
+                </div>
+                
+                <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Telefone:</span>
+                  <span className="font-semibold text-gray-800">{bookingFormData.phone}</span>
+                </div>
+                
+                <div className="flex justify-between items-start py-3 border-b border-gray-100">
+                  <span className="font-medium text-gray-700">Endereço:</span>
+                  <span className="font-semibold text-gray-800 text-right max-w-xs">{bookingFormData.address}</span>
+                </div>
+                
+                {bookingFormData.email && (
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="font-medium text-gray-700">E-mail:</span>
+                    <span className="font-semibold text-gray-800">{bookingFormData.email}</span>
+                  </div>
+                )}
+                
+                {bookingFormData.notes && (
+                  <div className="flex justify-between items-start py-3">
+                    <span className="font-medium text-gray-700">Observações:</span>
+                    <span className="font-semibold text-gray-800 text-right max-w-xs">{bookingFormData.notes}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+              <div className="flex items-start">
+                <div className="w-5 h-5 bg-amber-500 rounded-full flex-shrink-0 mt-0.5 mr-3"></div>
+                <div className="text-sm text-amber-800">
+                  <p className="font-medium mb-1">Importante:</p>
+                  <ul className="text-xs space-y-1 text-amber-700">
+                    <li>• Sua solicitação será enviada para nossa equipe</li>
+                    <li>• Você receberá uma confirmação via WhatsApp</li>
+                    <li>• A data ficará disponível até a confirmação oficial</li>
+                    <li>• Nossa equipe entrará em contato em até 2 horas</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex space-x-4">
+              <button
+                onClick={handleBackToForm}
+                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                Voltar e Editar
+              </button>
+              <button
+                onClick={handleConfirmBooking}
+                className="flex-1 bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                Confirmar Agendamento
+              </button>
             />
           </div>
         )}
