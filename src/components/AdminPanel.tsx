@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle, XCircle, Clock, Phone, Calendar, User, MapPin, MessageCircle, RefreshCw, History, Filter, Search, Download } from 'lucide-react';
+import { Shield, CheckCircle, XCircle, Clock, Phone, Calendar, User, MapPin, MessageCircle, RefreshCw, History, Filter, Search, Download, Settings } from 'lucide-react';
 import { Booking } from '../hooks/useBookings';
 import SliderManager from './SliderManager';
 import AvailabilityManager from './AvailabilityManager';
 import { useSliderImages } from '../hooks/useSliderImages';
+import BookingManagementSystem from './BookingManagementSystem';
 
 interface AdminPanelProps {
   bookings: Booking[];
@@ -17,7 +18,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
   const [adminCode, setAdminCode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'pending' | 'history' | 'slider' | 'availability'>('pending');
+  const [activeTab, setActiveTab] = useState<'pending' | 'history' | 'slider' | 'availability' | 'management'>('pending');
   const [historyFilter, setHistoryFilter] = useState<'all' | 'confirmed' | 'cancelled'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState('');
@@ -225,50 +226,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
 
               {/* Tabs */}
               <div className="flex border-b border-gray-200 mb-6">
-                <button
-                  onClick={() => setActiveTab('pending')}
-                  className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === 'pending'
-                      ? 'border-pink-500 text-pink-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <Clock className="w-4 h-4 mr-2" />
-                  Solicitações Pendentes ({pendingBookings.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('history')}
-                  className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === 'history'
-                      ? 'border-pink-500 text-pink-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <History className="w-4 h-4 mr-2" />
-                  Histórico Completo ({bookings.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('slider')}
-                  className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === 'slider'
-                      ? 'border-pink-500 text-pink-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Slides ({sliderImages.images.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('availability')}
-                  className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === 'availability'
-                      ? 'border-pink-500 text-pink-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Disponibilidade
-                </button>
+                {[
+                  { id: 'pending', label: 'Solicitações Pendentes', icon: Clock },
+                  { id: 'history', label: 'Histórico Completo', icon: History },
+                  { id: 'slider', label: 'Slides', icon: MessageCircle },
+                  { id: 'availability', label: 'Disponibilidade', icon: Calendar },
+                  { id: 'management', label: 'Sistema Completo', icon: Settings },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                      activeTab === tab.id
+                        ? 'border-pink-500 text-pink-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    <tab.icon className="w-4 h-4 mr-2" />
+                    {tab.label} {tab.id === 'pending' && `(${pendingBookings.length})`}
+                    {tab.id === 'history' && `(${bookings.length})`}
+                    {tab.id === 'slider' && `(${sliderImages.images.length})`}
+                  </button>
+                ))}
               </div>
 
               {/* Conteúdo das Tabs */}
@@ -576,6 +555,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                   />
                 </div>
               ) : null}
+
+              {/* Sistema de Gerenciamento Completo */}
+              {activeTab === 'management' && (
+                <div className="max-h-[70vh] overflow-y-auto custom-scrollbar">
+                  <BookingManagementSystem />
+                </div>
+              )}
 
               {/* Statistics Footer */}
               <div className="mt-6 pt-4 border-t border-gray-200">
