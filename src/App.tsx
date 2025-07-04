@@ -11,6 +11,7 @@ import ImageSlider from './components/ImageSlider';
 import ServiceSelectionModal from './components/ServiceSelectionModal';
 import { useBookings } from './hooks/useBookings';
 import { useSliderImages } from './hooks/useSliderImages';
+import { useAvailability } from './hooks/useAvailability';
 
 const services = [
   {
@@ -50,6 +51,7 @@ function App() {
   
   const { bookings, addBooking, getBookedDates, getPendingDates, confirmBookingViaWhatsApp, cancelBooking } = useBookings();
   const sliderImages = useSliderImages();
+  const { isDateAvailable: isDateAvailableByAdmin } = useAvailability();
 
   const handleServiceSelect = (serviceId: string) => {
     setSelectedService(serviceId);

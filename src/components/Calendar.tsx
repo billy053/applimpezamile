@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { useAvailability } from '../hooks/useAvailability';
 
 interface CalendarProps {
   selectedDate: Date | null;
@@ -9,6 +10,7 @@ interface CalendarProps {
 }
 
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedDates, pendingDates = [] }) => {
+  const { isDateAvailable, getUnavailabilityReason } = useAvailability();
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const monthNames = [
@@ -60,14 +62,27 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
   const isDateAvailable = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    // Data disponível se for futura e NÃO estiver confirmada (pendente ainda pode ser selecionada)
-    return date >= today && !isDateBooked(date);
+    
+    // Verificar se a data não está no passado
+    if (date < today) return false;
+    
+    // Verificar se a data não está confirmada (booked)
+    if (isDateBooked(date)) return false;
+    
+    // Verificar disponibilidade configurada pelo admin
+    return isDateAvailable(date);
   };
 
   const isPastDate = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date < today;
+  };
+
+  const isAdminBlocked = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date >= today && !isDateAvailable(date) && !isDateBooked(date) && !isDatePending(date);
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -84,9 +99,10 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
 
   // Count available, booked and pending dates for current month
   const currentMonthDays = days.filter(day => day !== null) as Date[];
-  const availableDays = currentMonthDays.filter(date => isDateAvailable(date) && !isDatePending(date)).length;
+  const availableDays = currentMonthDays.filter(date => isDateAvailable(date) && !isDatePending(date) && !isAdminBlocked(date)).length;
   const bookedDays = currentMonthDays.filter(date => isDateBooked(date)).length;
   const pendingDays = currentMonthDays.filter(date => isDatePending(date)).length;
+  const blockedDays = currentMonthDays.filter(date => isAdminBlocked(date)).length;
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -124,7 +140,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
           </div>
           <div className="flex items-center">
             <XCircle className="w-4 h-4 mr-2 text-red-300" />
-            <span>{bookedDays} confirmados</span>
+            <span>{bookedDays + blockedDays} ocupados</span>
           </div>
         </div>
       </div>
@@ -151,6 +167,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
             const isPending = isDatePending(date);
             const isSelected = isDateSelected(date);
             const isPast = isPastDate(date);
+            const isBlocked = isAdminBlocked(date);
+            const unavailabilityReason = getUnavailabilityReason(date);
 
             return (
               <button
@@ -162,6 +180,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
                     ? 'bg-pink-500 text-white shadow-md transform scale-105'
                     : isBooked
                     ? 'bg-red-100 text-red-600 cursor-not-allowed border border-red-200'
+                    : isBlocked
+                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
                     : isPending
                     ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border border-yellow-200'
                     : isAvailable
@@ -170,6 +190,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
                     ? 'bg-gray-50 text-gray-400 cursor-not-allowed'
                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
+                title={isBlocked && unavailabilityReason ? unavailabilityReason : undefined}
               >
                 {date.getDate()}
                 {isBooked && (
@@ -180,6 +201,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
                 {isPending && (
                   <div className="absolute top-1 right-1">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  </div>
+                )}
+                {isBlocked && (
+                  <div className="absolute top-1 right-1">
+                    <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
                   </div>
                 )}
                 {isSelected && (
@@ -213,7 +239,13 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
               <div className="w-4 h-4 bg-red-100 border border-red-200 rounded mr-2 relative">
                 <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-red-500 rounded-full"></div>
               </div>
-              <span className="text-gray-600">Confirmado</span>
+              <span className="text-gray-600">Ocupado</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-gray-100 border border-gray-200 rounded mr-2 relative">
+                <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
+              </div>
+              <span className="text-gray-600">Indisponível</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-blue-500 rounded mr-2 relative">
@@ -232,7 +264,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
               <p className="font-medium mb-1">Como funciona o agendamento:</p>
               <ul className="text-xs space-y-1 text-pink-700">
                 <li>• Datas em <span className="font-medium text-yellow-700">amarelo</span> foram solicitadas via WhatsApp</li>
-                <li>• Datas em <span className="font-medium text-red-700">vermelho</span> foram confirmadas e estão ocupadas</li>
+                <li>• Datas em <span className="font-medium text-red-700">vermelho</span> estão confirmadas/ocupadas</li>
+                <li>• Datas em <span className="font-medium text-gray-700">cinza</span> estão indisponíveis</li>
                 <li>• Você ainda pode selecionar datas pendentes se não forem confirmadas</li>
               </ul>
             </div>

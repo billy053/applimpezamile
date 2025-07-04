@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Shield, CheckCircle, XCircle, Clock, Phone, Calendar, User, MapPin, MessageCircle, RefreshCw, History, Filter, Search, Download } from 'lucide-react';
 import { Booking } from '../hooks/useBookings';
 import SliderManager from './SliderManager';
+import AvailabilityManager from './AvailabilityManager';
 import { useSliderImages } from '../hooks/useSliderImages';
 
 interface AdminPanelProps {
@@ -16,7 +17,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
   const [adminCode, setAdminCode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'pending' | 'history' | 'slider'>('pending');
+  const [activeTab, setActiveTab] = useState<'pending' | 'history' | 'slider' | 'availability'>('pending');
   const [historyFilter, setHistoryFilter] = useState<'all' | 'confirmed' | 'cancelled'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState('');
@@ -256,6 +257,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Slides ({sliderImages.images.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('availability')}
+                  className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    activeTab === 'availability'
+                      ? 'border-pink-500 text-pink-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Disponibilidade
                 </button>
               </div>
 
@@ -556,6 +568,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                   onReorderImage={sliderImages.reorderImages}
                   onToggleActive={sliderImages.toggleImageActive}
                 />
+              ) : (
+                <AvailabilityManager />
               )}
 
               {/* Statistics Footer */}
