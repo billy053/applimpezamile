@@ -7,7 +7,9 @@ import BookingForm, { BookingData } from './components/BookingForm';
 import BookingConfirmation from './components/BookingConfirmation';
 import AdminPanel from './components/AdminPanel';
 import ReviewSystem from './components/ReviewSystem';
+import ImageSlider from './components/ImageSlider';
 import { useBookings } from './hooks/useBookings';
+import { useSliderImages } from './hooks/useSliderImages';
 
 const services = [
   {
@@ -43,6 +45,7 @@ function App() {
   const [currentBooking, setCurrentBooking] = useState<any>(null);
   
   const { bookings, addBooking, getBookedDates, getPendingDates, confirmBookingViaWhatsApp, cancelBooking } = useBookings();
+  const sliderImages = useSliderImages();
 
   const handleServiceSelect = (serviceId: string) => {
     setSelectedService(serviceId);
@@ -183,6 +186,11 @@ Obrigado pela compreensão! 🙏`;
     <div className="min-h-screen bg-gray-50">
       <Header />
       
+      {/* Image Slider */}
+      <div className="container mx-auto px-4 pt-8">
+        <ImageSlider images={sliderImages.images} />
+      </div>
+      
       <div className="container mx-auto px-4 py-8">
         {/* Progress indicator - only show for booking flow */}
         {currentStep !== 'confirmation' && (
@@ -321,6 +329,7 @@ Obrigado pela compreensão! 🙏`;
       {/* Admin Panel */}
       <AdminPanel
         bookings={bookings}
+        sliderImages={sliderImages}
         onConfirmBooking={handleConfirmBooking}
         onCancelBooking={handleCancelBooking}
       />
