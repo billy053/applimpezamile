@@ -242,39 +242,6 @@ Obrigado pela compreensão! 🙏`;
       </div>
       
       <div className="container mx-auto px-4 py-8">
-        {/* Progress indicator - only show for booking flow */}
-        {currentStep !== 'service' && currentStep !== 'confirmation' && (
-          <div className="flex justify-center mb-8">
-            <div className="flex items-center space-x-4">
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                ['date', 'booking', 'review'].includes(currentStep) ? 'bg-green-500 text-white' : 'bg-gray-300'
-              }`}>
-                1
-              </div>
-              <div className="w-12 h-0.5 bg-gray-300"></div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'date' ? 'bg-pink-500 text-white' : 
-                ['booking', 'review'].includes(currentStep) ? 'bg-green-500 text-white' : 'bg-gray-300'
-              }`}>
-                2
-              </div>
-              <div className="w-12 h-0.5 bg-gray-300"></div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'booking' ? 'bg-pink-500 text-white' : 
-                currentStep === 'review' ? 'bg-green-500 text-white' : 'bg-gray-300'
-              }`}>
-                3
-              </div>
-              <div className="w-12 h-0.5 bg-gray-300"></div>
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep === 'review' ? 'bg-pink-500 text-white' : 'bg-gray-300'
-              }`}>
-                4
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Service Selection */}
         {currentStep === 'service' && (
           <div className="max-w-4xl mx-auto">
@@ -476,6 +443,18 @@ Obrigado pela compreensão! 🙏`;
         onClose={() => setShowServiceModal(false)}
         onServiceSelect={handleModalServiceSelect}
         services={services}
+        currentStep={currentStep}
+        selectedService={selectedService}
+        selectedDate={selectedDate}
+        onDateSelect={handleDateSelect}
+        onBookingFormSubmit={handleBookingFormSubmit}
+        onConfirmBooking={handleConfirmBooking}
+        onBackToForm={handleBackToForm}
+        onEditService={handleEditService}
+        onEditDate={handleEditDate}
+        bookedDates={getBookedDates()}
+        pendingDates={getPendingDates()}
+        bookingFormData={bookingFormData}
       />
     </div>
   );
