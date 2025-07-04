@@ -88,7 +88,7 @@ ${booking.notes ? `📝 *Observações:* ${booking.notes}` : ''}
 
 🔢 *ID da Solicitação:* #${newBooking.id.slice(-6)}
 
-⚠️ *IMPORTANTE:* Use o painel administrativo para confirmar ou recusar este agendamento.`;
+⚠️ *IMPORTANTE:* Após a confirmação do agendamento você receberá uma mensagem aqui`;
 
     // Replace with your actual WhatsApp number (include country code without + or spaces)
     const whatsappNumber = '555381556144';
