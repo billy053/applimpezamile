@@ -574,17 +574,17 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
           </div>
         </div>
 
-        <div className="max-h-64 overflow-y-auto custom-scrollbar">
+        <div className="max-h-80 overflow-y-auto custom-scrollbar border border-gray-200 rounded-lg">
           {sortedAvailability.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-12 text-gray-500 bg-gray-50">
               <CalendarIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
               <p>Nenhuma configuração de disponibilidade</p>
               <p className="text-sm text-gray-400">Configure datas usando as abas acima</p>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1 p-2">
               {sortedAvailability.map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+                <div key={item.id} className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-lg hover:shadow-sm hover:bg-gray-50 transition-all duration-200">
                   <div className="flex items-center space-x-3">
                     {item.isAvailable ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
@@ -620,6 +620,17 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
             </div>
           )}
         </div>
+        
+        {/* Indicador de rolagem */}
+        {sortedAvailability.length > 5 && (
+          <div className="mt-2 text-center">
+            <p className="text-xs text-gray-500 flex items-center justify-center">
+              <ChevronUp className="w-3 h-3 mr-1" />
+              Role para ver mais configurações
+              <ChevronDown className="w-3 h-3 ml-1" />
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
