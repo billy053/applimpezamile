@@ -213,9 +213,6 @@ Obrigado pela compreensão! 🙏`;
         {/* Service Selection */}
         {currentStep === 'service' && (
           <div className="max-w-4xl mx-auto">
-            {/* Review System */}
-            <ReviewSystem />
-            
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
               Escolha o Tipo de Serviço
             </h2>
@@ -232,6 +229,11 @@ Obrigado pela compreensão! 🙏`;
                   onClick={() => handleServiceSelect(service.id)}
                 />
               ))}
+            </div>
+            
+            {/* Review System */}
+            <div className="mt-16">
+              <ReviewSystem />
             </div>
           </div>
         )}
