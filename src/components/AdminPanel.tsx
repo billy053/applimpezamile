@@ -568,9 +568,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ bookings, sliderImages, onConfi
                   onReorderImage={sliderImages.reorderImages}
                   onToggleActive={sliderImages.toggleImageActive}
                 />
-              ) : (
+              ) : activeTab === 'availability' ? (
                 <AvailabilityManager />
-              )}
+              ) : null}
 
               {/* Statistics Footer */}
               <div className="mt-6 pt-4 border-t border-gray-200">

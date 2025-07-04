@@ -59,7 +59,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
     return selectedDate && selectedDate.toDateString() === date.toDateString();
   };
 
-  const isDateAvailable = (date: Date) => {
+  const isDateSelectable = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -99,7 +99,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
 
   // Count available, booked and pending dates for current month
   const currentMonthDays = days.filter(day => day !== null) as Date[];
-  const availableDays = currentMonthDays.filter(date => isDateAvailable(date) && !isDatePending(date) && !isAdminBlocked(date)).length;
+  const availableDays = currentMonthDays.filter(date => isDateSelectable(date) && !isDatePending(date) && !isAdminBlocked(date)).length;
   const bookedDays = currentMonthDays.filter(date => isDateBooked(date)).length;
   const pendingDays = currentMonthDays.filter(date => isDatePending(date)).length;
   const blockedDays = currentMonthDays.filter(date => isAdminBlocked(date)).length;
@@ -162,7 +162,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, bookedD
               return <div key={index} className="h-12"></div>;
             }
 
-            const isAvailable = isDateAvailable(date);
+            const isAvailable = isDateSelectable(date);
             const isBooked = isDateBooked(date);
             const isPending = isDatePending(date);
             const isSelected = isDateSelected(date);
